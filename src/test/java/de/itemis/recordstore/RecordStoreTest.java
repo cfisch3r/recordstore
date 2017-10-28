@@ -8,11 +8,11 @@ public class RecordStoreTest {
 
     public static final Integer NEW_ALBUM_ID = 4711;
     private RecordStore recordStore;
-    private RecordRepository recordRepository;
+    private RecordRepositoryMock recordRepository;
 
     @Before
     public void setUp() throws Exception {
-        recordRepository = new RecordRepository(NEW_ALBUM_ID);
+        recordRepository = new RecordRepositoryMock(NEW_ALBUM_ID);
         recordStore = new RecordStore(recordRepository);
     }
 
@@ -22,7 +22,6 @@ public class RecordStoreTest {
         Integer albumId = recordStore.add(record);
         Assert.assertEquals(NEW_ALBUM_ID,albumId);
     }
-
 
     @Test
     public void new_record_is_stored_in_Repository() {
