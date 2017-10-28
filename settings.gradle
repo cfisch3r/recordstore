@@ -1,2 +1,3 @@
-rootProject.name = 'albums'
+rootProject.name = 'recordstore'
+include 'core'
 
