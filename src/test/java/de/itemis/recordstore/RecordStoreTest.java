@@ -32,11 +32,14 @@ public class RecordStoreTest {
     }
 
     private Record createRecord() {
-        return new Record("Book of Death","Iron Maiden");
+        Record record = new Record("The Book of Souls", "Iron Maiden");
+        record.addSong(new Song("Speed of Light", 302));
+        return record;
     }
 
     private void assertEquals(Record record, Record storedRecord) {
         Assert.assertEquals(storedRecord.getTitle(), record.getTitle());
         Assert.assertEquals(storedRecord.getArtist(), record.getArtist());
+        Assert.assertEquals(storedRecord.getSongs(), record.getSongs());
     }
 }
