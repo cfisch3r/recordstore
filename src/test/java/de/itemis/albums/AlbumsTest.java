@@ -10,6 +10,6 @@ public class AlbumsTest {
         Albums albums = new Albums();
         Album album = new Album();
         Integer albumId = albums.add(album);
-        Assert.assertEquals("4711",albumId);
+        Assert.assertEquals(Integer.valueOf(4711),albumId);
     }
 }
