@@ -1,0 +1,12 @@
+repositories {
+    jcenter()
+}
+
+dependencies {
+    testCompile 'com.github.tdomzal:junit-docker-rule:0.3'
+    testCompile 'mysql:mysql-connector-java:6.0.5'
+    testCompile 'commons-dbutils:commons-dbutils:1.7'
+    testCompile 'org.flywaydb:flyway-core:4.2.0'
+
+
+}
