@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class RecordStoreTest {
 
-    public static final Integer NEW_ALBUM_ID = 4711;
+    public static final Long NEW_ALBUM_ID = 4711L;
     private RecordStore recordStore;
     private RecordRepositoryMock recordRepository;
 
@@ -19,7 +19,7 @@ public class RecordStoreTest {
     @Test
     public void when_record_is_stored_ID_from_repository_is_returned() {
         Record record = createRecord();
-        Integer albumId = recordStore.add(record);
+        Long albumId = recordStore.add(record);
         Assert.assertEquals(NEW_ALBUM_ID,albumId);
     }
 

@@ -7,7 +7,7 @@ public class RecordStore {
         this.recordRepository = recordRepository;
     }
 
-    public Integer add(Record record) {
+    public Long add(Record record) {
 
         return recordRepository.save(record);
     }

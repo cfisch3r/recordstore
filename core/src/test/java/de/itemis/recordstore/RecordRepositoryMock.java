@@ -2,15 +2,15 @@ package de.itemis.recordstore;
 
 public class RecordRepositoryMock implements RecordRepository {
 
-    private int newAlbumID;
+    private Long newAlbumID;
     private Record record;
 
-    public RecordRepositoryMock(int newAlbumID) {
+    public RecordRepositoryMock(Long newAlbumID) {
         this.newAlbumID = newAlbumID;
     }
 
     @Override
-    public Integer save(Record record) {
+    public Long save(Record record) {
         this.record = record;
         return newAlbumID;
     }

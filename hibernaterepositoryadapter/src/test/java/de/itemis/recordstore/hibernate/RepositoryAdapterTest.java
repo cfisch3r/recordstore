@@ -48,20 +48,32 @@ public class RepositoryAdapterTest {
 
     @Test
     public void record_is_saved() throws SQLException {
-        RepositoryAdapter repositoryAdapter = new RepositoryAdapter();
+        RepositoryAdapter repositoryAdapter = new RepositoryAdapter("jdbc:mysql://127.0.0.1/recordstore", "test", "test");
         repositoryAdapter.save(new Record("V","Led Zeppelin"));
         List<Map<String, Object>> entries = getAllEntries("record");
         Assert.assertEquals("V", getFieldValue(entries.get(0), "TITLE"));
         Assert.assertEquals("Led Zeppelin", getFieldValue(entries.get(0), "ARTIST"));
     }
 
+    @Test
+    public void new_id_is_returned() throws SQLException {
+        RepositoryAdapter repositoryAdapter = new RepositoryAdapter("jdbc:mysql://127.0.0.1/recordstore", "test", "test");
+        Long id = repositoryAdapter.save(new Record("V", "Led Zeppelin"));
+        List<Map<String, Object>> entries = getAllEntries("record");
+        Assert.assertEquals(id.longValue(), getIntegerFieldValue(entries.get(0), "ID").longValue());
+    }
+
     private String getFieldValue(Map<String, Object> entry, String field) {
         return (String) entry.get(field);
     }
 
+    private Integer getIntegerFieldValue(Map<String, Object> entry, String field) {
+        return (Integer) entry.get(field);
+    }
+
     private List<Map<String, Object>> getAllEntries(String table) throws SQLException {
         QueryRunner runner = new QueryRunner(getMysqlDataSource(RECORDSTORE_SCHEMA));
-        return runner.query(String.format("select * from %s", table, new MapListHandler());
+        return runner.query(String.format("select * from %s", table), new MapListHandler());
     }
 
     private void createSchema() throws SQLException {
