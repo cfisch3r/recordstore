@@ -3,6 +3,7 @@ package de.itemis.recordstore.hibernate;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import de.itemis.recordstore.Record;
+import de.itemis.recordstore.Song;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.flywaydb.core.Flyway;
@@ -22,6 +23,7 @@ public class RepositoryAdapterTest {
     public static final String DB_USER = "test";
     public static final String DB_PW = "test";
     public static final String RECORD_TABLE = "record";
+    public static final String SONG_TABLE = "song";
 
     private RepositoryAdapter repositoryAdapter;
 
@@ -47,8 +49,10 @@ public class RepositoryAdapterTest {
     }
 
     @Test
-    public void schema_is_imported() throws SQLException {
-        List<Map<String, Object>> entries = getAllEntries("record");
+    public void schema_is_empty() throws SQLException {
+        List<Map<String, Object>> entries = getAllEntries(RECORD_TABLE);
+        Assert.assertEquals(0,entries.size());
+        List<Map<String, Object>> songentries = getAllEntries(SONG_TABLE);
         Assert.assertEquals(0,entries.size());
     }
 
@@ -56,8 +60,18 @@ public class RepositoryAdapterTest {
     public void record_is_saved() throws SQLException {
         repositoryAdapter.save(new Record("V","Led Zeppelin"));
         List<Map<String, Object>> entries = getAllEntries(RECORD_TABLE);
-        Assert.assertEquals("V", getFieldValue(entries.get(0), "TITLE"));
-        Assert.assertEquals("Led Zeppelin", getFieldValue(entries.get(0), "ARTIST"));
+        Assert.assertEquals("V", getStringFieldValue(entries.get(0), "TITLE"));
+        Assert.assertEquals("Led Zeppelin", getStringFieldValue(entries.get(0), "ARTIST"));
+    }
+
+    @Test
+    public void song_is_saved() throws SQLException {
+        Record record = new Record("V", "Led Zeppelin");
+        record.addSong(new Song("Black Dog",10));
+        repositoryAdapter.save(record);
+        List<Map<String, Object>> allEntries = getAllEntries(SONG_TABLE);
+        Assert.assertEquals("Black Dog", getStringFieldValue(allEntries.get(0),"TITLE"));
+        Assert.assertEquals(10,getIntegerFieldValue(allEntries.get(0),"DURATION").intValue());
     }
 
     @Test
@@ -67,7 +81,7 @@ public class RepositoryAdapterTest {
         Assert.assertEquals(id.longValue(), getIntegerFieldValue(entries.get(0), "ID").longValue());
     }
 
-    private String getFieldValue(Map<String, Object> entry, String field) {
+    private String getStringFieldValue(Map<String, Object> entry, String field) {
         return (String) entry.get(field);
     }
 

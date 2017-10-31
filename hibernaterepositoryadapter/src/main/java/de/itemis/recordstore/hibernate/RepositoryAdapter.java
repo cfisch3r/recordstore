@@ -32,6 +32,7 @@ public class RepositoryAdapter implements RecordRepository{
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLInnoDBDialect");
         configuration.setProperty("hibernate.connection.username", userName);
         configuration.setProperty("hibernate.connection.password", password);
+        configuration.addAnnotatedClass(SongEntry.class);
         configuration.addAnnotatedClass(RecordEntry.class);
         return configuration.buildSessionFactory();
     }
