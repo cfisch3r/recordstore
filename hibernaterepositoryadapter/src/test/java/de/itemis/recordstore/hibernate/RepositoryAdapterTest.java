@@ -2,7 +2,6 @@ package de.itemis.recordstore.hibernate;
 
 
 import com.mysql.cj.jdbc.MysqlDataSource;
-import com.spotify.docker.client.exceptions.DockerException;
 import de.itemis.recordstore.Record;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapListHandler;
@@ -12,7 +11,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -44,19 +42,26 @@ public class RepositoryAdapterTest {
 
     @Test
     public void schema_is_imported() throws SQLException {
-        QueryRunner runner = new QueryRunner(getMysqlDataSource(RECORDSTORE_SCHEMA));
-        List<Map<String, Object>> entries = runner.query("select * from record", new MapListHandler());
+        List<Map<String, Object>> entries = getAllEntries("record");
         Assert.assertEquals(0,entries.size());
     }
 
     @Test
     public void record_is_saved() throws SQLException {
         RepositoryAdapter repositoryAdapter = new RepositoryAdapter();
-        Record record = new Record("V","Led Zeppelin");
-        repositoryAdapter.save(record);
+        repositoryAdapter.save(new Record("V","Led Zeppelin"));
+        List<Map<String, Object>> entries = getAllEntries("record");
+        Assert.assertEquals("V", getFieldValue(entries.get(0), "TITLE"));
+        Assert.assertEquals("Led Zeppelin", getFieldValue(entries.get(0), "ARTIST"));
+    }
+
+    private String getFieldValue(Map<String, Object> entry, String field) {
+        return (String) entry.get(field);
+    }
+
+    private List<Map<String, Object>> getAllEntries(String table) throws SQLException {
         QueryRunner runner = new QueryRunner(getMysqlDataSource(RECORDSTORE_SCHEMA));
-        List<Map<String, Object>> entries = runner.query("select * from record", new MapListHandler());
-        Assert.assertEquals(1,entries.size());
+        return runner.query(String.format("select * from %s", table, new MapListHandler());
     }
 
     private void createSchema() throws SQLException {
