@@ -17,8 +17,13 @@ import java.util.Map;
 
 public class RepositoryAdapterTest {
     public static final String RECORDSTORE_SCHEMA = "recordstore";
-
     public static final String MYSQL_SCHEMA = "mysql";
+    public static final String DB_BASE_CONNECTION_STRING = "jdbc:mysql://127.0.0.1";
+    public static final String DB_USER = "test";
+    public static final String DB_PW = "test";
+    public static final String RECORD_TABLE = "record";
+
+    private RepositoryAdapter repositoryAdapter;
 
 //    @ClassRule
 //    public static DockerRule mysqlContainer = DockerRule.builder()
@@ -32,6 +37,7 @@ public class RepositoryAdapterTest {
     public void setUp() throws Exception {
         createSchema();
         importSchema();
+        repositoryAdapter = new RepositoryAdapter(String.format("%s/%s",DB_BASE_CONNECTION_STRING,RECORDSTORE_SCHEMA), DB_USER, DB_PW);
     }
 
     @After
@@ -48,18 +54,16 @@ public class RepositoryAdapterTest {
 
     @Test
     public void record_is_saved() throws SQLException {
-        RepositoryAdapter repositoryAdapter = new RepositoryAdapter("jdbc:mysql://127.0.0.1/recordstore", "test", "test");
         repositoryAdapter.save(new Record("V","Led Zeppelin"));
-        List<Map<String, Object>> entries = getAllEntries("record");
+        List<Map<String, Object>> entries = getAllEntries(RECORD_TABLE);
         Assert.assertEquals("V", getFieldValue(entries.get(0), "TITLE"));
         Assert.assertEquals("Led Zeppelin", getFieldValue(entries.get(0), "ARTIST"));
     }
 
     @Test
     public void new_id_is_returned() throws SQLException {
-        RepositoryAdapter repositoryAdapter = new RepositoryAdapter("jdbc:mysql://127.0.0.1/recordstore", "test", "test");
         Long id = repositoryAdapter.save(new Record("V", "Led Zeppelin"));
-        List<Map<String, Object>> entries = getAllEntries("record");
+        List<Map<String, Object>> entries = getAllEntries(RECORD_TABLE);
         Assert.assertEquals(id.longValue(), getIntegerFieldValue(entries.get(0), "ID").longValue());
     }
 
@@ -79,7 +83,7 @@ public class RepositoryAdapterTest {
     private void createSchema() throws SQLException {
         MysqlDataSource ds = getMysqlDataSource(MYSQL_SCHEMA);
         QueryRunner runner = new QueryRunner(ds);
-        runner.execute("CREATE DATABASE recordstore");
+        runner.execute(String.format("CREATE DATABASE %s",RECORDSTORE_SCHEMA));
     }
 
     private void importSchema() {
@@ -91,13 +95,12 @@ public class RepositoryAdapterTest {
     private void dropSchema() throws SQLException {
         MysqlDataSource ds = getMysqlDataSource(MYSQL_SCHEMA);
         QueryRunner runner = new QueryRunner(ds);
-        runner.execute("DROP DATABASE recordstore");
+        runner.execute(String.format("DROP DATABASE %s",RECORDSTORE_SCHEMA));
     }
 
     private MysqlDataSource getMysqlDataSource(String schema) {
         MysqlDataSource ds = new MysqlDataSource();
-        ds.setUrl(String.format("jdbc:mysql://127.0.0.1:3306/%s?" +
-                "user=%s&password=%s", schema,"test","test"));
+        ds.setUrl(String.format("%s/%s?user=%s&password=%s",DB_BASE_CONNECTION_STRING, schema,DB_USER,DB_PW));
         return ds;
     }
 }
