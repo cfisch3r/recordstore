@@ -3,6 +3,7 @@ package de.itemis.recordstore.hibernate;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import com.spotify.docker.client.exceptions.DockerException;
+import de.itemis.recordstore.Record;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.flywaydb.core.Flyway;
@@ -46,6 +47,16 @@ public class RepositoryAdapterTest {
         QueryRunner runner = new QueryRunner(getMysqlDataSource(RECORDSTORE_SCHEMA));
         List<Map<String, Object>> entries = runner.query("select * from record", new MapListHandler());
         Assert.assertEquals(0,entries.size());
+    }
+
+    @Test
+    public void record_is_saved() throws SQLException {
+        RepositoryAdapter repositoryAdapter = new RepositoryAdapter();
+        Record record = new Record("V","Led Zeppelin");
+        repositoryAdapter.save(record);
+        QueryRunner runner = new QueryRunner(getMysqlDataSource(RECORDSTORE_SCHEMA));
+        List<Map<String, Object>> entries = runner.query("select * from record", new MapListHandler());
+        Assert.assertEquals(1,entries.size());
     }
 
     private void createSchema() throws SQLException {

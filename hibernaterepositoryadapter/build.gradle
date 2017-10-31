@@ -3,6 +3,9 @@ repositories {
 }
 
 dependencies {
+
+    compile project(':core')
+
     testCompile 'com.github.tdomzal:junit-docker-rule:0.3'
     testCompile 'mysql:mysql-connector-java:6.0.5'
     testCompile 'commons-dbutils:commons-dbutils:1.7'
