@@ -51,4 +51,13 @@ configuration options cannot be used. This  prevents the use of the Google check
 
 Results can be found in *build/results/checkstyle*.
 
+###PMD
+For further code inspection th [PMD Gradle Plugin](https://docs.gradle.org/current/userguide/pmd_plugin.html) was added
+and can be executed with.
+
+```
+gradle check
+```
+
+The results can be found in *build/reports/pmd*.
  
