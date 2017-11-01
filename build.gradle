@@ -5,6 +5,7 @@ allprojects {
 	apply plugin: 'java'
 	apply plugin: 'jdepend'
 	apply plugin: "jacoco"
+	apply plugin: 'findbugs'
 
 
 	sourceCompatibility = 1.8
@@ -22,6 +23,14 @@ allprojects {
 			xml.enabled false
 			csv.enabled false
 			html.destination file("${buildDir}/jacocoHtml")
+		}
+	}
+
+	tasks.withType(FindBugs) {
+		reports {
+			xml.enabled false
+			html.enabled true
+//			html.stylesheet resources.text.fromFile('config/xsl/findbugs-custom.xsl')
 		}
 	}
 }
