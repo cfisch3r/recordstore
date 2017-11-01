@@ -39,26 +39,24 @@ public class RepositoryAdapterTest {
     public void setUp() throws Exception {
         createSchema();
         importSchema();
-        repositoryAdapter = new RepositoryAdapter(String.format("%s/%s",DB_BASE_CONNECTION_STRING,RECORDSTORE_SCHEMA), DB_USER, DB_PW);
+        repositoryAdapter = new RepositoryAdapter(String.format("%s/%s", DB_BASE_CONNECTION_STRING, RECORDSTORE_SCHEMA),
+                DB_USER, DB_PW);
     }
 
     @After
     public void tearDown() throws Exception {
         dropSchema();
-
     }
 
     @Test
     public void schema_is_empty() throws SQLException {
-        List<Map<String, Object>> entries = getAllEntries(RECORD_TABLE);
-        Assert.assertEquals(0,entries.size());
-        List<Map<String, Object>> songentries = getAllEntries(SONG_TABLE);
-        Assert.assertEquals(0,entries.size());
+        assertHasNoEntries(RECORD_TABLE);
+        assertHasNoEntries(SONG_TABLE);
     }
 
     @Test
     public void record_is_saved() throws SQLException {
-        repositoryAdapter.save(new Record("V","Led Zeppelin"));
+        repositoryAdapter.save(new Record("V", "Led Zeppelin"));
         List<Map<String, Object>> entries = getAllEntries(RECORD_TABLE);
         Assert.assertEquals("V", getStringFieldValue(entries.get(0), "TITLE"));
         Assert.assertEquals("Led Zeppelin", getStringFieldValue(entries.get(0), "ARTIST"));
@@ -67,11 +65,11 @@ public class RepositoryAdapterTest {
     @Test
     public void song_is_saved() throws SQLException {
         Record record = new Record("V", "Led Zeppelin");
-        record.addSong(new Song("Black Dog",10));
+        record.addSong(new Song("Black Dog", 10));
         repositoryAdapter.save(record);
         List<Map<String, Object>> allEntries = getAllEntries(SONG_TABLE);
-        Assert.assertEquals("Black Dog", getStringFieldValue(allEntries.get(0),"TITLE"));
-        Assert.assertEquals(10,getIntegerFieldValue(allEntries.get(0),"DURATION").intValue());
+        Assert.assertEquals("Black Dog", getStringFieldValue(allEntries.get(0), "TITLE"));
+        Assert.assertEquals(10, getIntegerFieldValue(allEntries.get(0), "DURATION").intValue());
     }
 
     @Test
@@ -97,7 +95,7 @@ public class RepositoryAdapterTest {
     private void createSchema() throws SQLException {
         MysqlDataSource ds = getMysqlDataSource(MYSQL_SCHEMA);
         QueryRunner runner = new QueryRunner(ds);
-        runner.execute(String.format("CREATE DATABASE %s",RECORDSTORE_SCHEMA));
+        runner.execute(String.format("CREATE DATABASE %s", RECORDSTORE_SCHEMA));
     }
 
     private void importSchema() {
@@ -109,12 +107,17 @@ public class RepositoryAdapterTest {
     private void dropSchema() throws SQLException {
         MysqlDataSource ds = getMysqlDataSource(MYSQL_SCHEMA);
         QueryRunner runner = new QueryRunner(ds);
-        runner.execute(String.format("DROP DATABASE %s",RECORDSTORE_SCHEMA));
+        runner.execute(String.format("DROP DATABASE %s", RECORDSTORE_SCHEMA));
     }
 
     private MysqlDataSource getMysqlDataSource(String schema) {
         MysqlDataSource ds = new MysqlDataSource();
-        ds.setUrl(String.format("%s/%s?user=%s&password=%s",DB_BASE_CONNECTION_STRING, schema,DB_USER,DB_PW));
+        ds.setUrl(String.format("%s/%s?user=%s&password=%s", DB_BASE_CONNECTION_STRING, schema, DB_USER, DB_PW));
         return ds;
+    }
+
+    private void assertHasNoEntries(String tableName) throws SQLException {
+        List<Map<String, Object>> entries = getAllEntries(tableName);
+        Assert.assertEquals(0, entries.size());
     }
 }

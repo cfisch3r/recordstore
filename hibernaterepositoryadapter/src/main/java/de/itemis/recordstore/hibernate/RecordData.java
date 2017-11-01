@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "record")
-public class RecordEntry {
+public class RecordData {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -23,13 +23,13 @@ public class RecordEntry {
 
     @OneToMany(cascade={CascadeType.ALL})
     @JoinColumn(name="RECORD_ID", nullable=false)
-    public Set<SongEntry> songs = new HashSet<>();
+    public Set<SongData> songs = new HashSet<>();
 
-    public RecordEntry(Record record) {
+    public RecordData(Record record) {
         this.title = record.getTitle();
         this.artist = record.getArtist();
         for (Song song : record.getSongs()) {
-            songs.add(new SongEntry(song));
+            songs.add(new SongData(song));
         }
     }
 }

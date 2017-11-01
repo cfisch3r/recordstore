@@ -17,7 +17,7 @@ public class RepositoryAdapter implements RecordRepository{
     @Override
     public Long save(Record record) {
         Session session = sessionFactory.openSession();
-        RecordEntry entry = new RecordEntry(record);
+        RecordData entry = new RecordData(record);
         session.save(entry);
         session.close();
         return entry.id;
@@ -32,8 +32,8 @@ public class RepositoryAdapter implements RecordRepository{
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLInnoDBDialect");
         configuration.setProperty("hibernate.connection.username", userName);
         configuration.setProperty("hibernate.connection.password", password);
-        configuration.addAnnotatedClass(SongEntry.class);
-        configuration.addAnnotatedClass(RecordEntry.class);
+        configuration.addAnnotatedClass(SongData.class);
+        configuration.addAnnotatedClass(RecordData.class);
         return configuration.buildSessionFactory();
     }
 }
