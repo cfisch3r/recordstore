@@ -58,8 +58,7 @@ public class RepositoryAdapterTest {
     public void record_is_saved() throws SQLException {
         repositoryAdapter.save(new Record("V", "Led Zeppelin"));
         List<Map<String, Object>> entries = getAllEntries(RECORD_TABLE);
-        Assert.assertEquals("V", getStringFieldValue(entries.get(0), "TITLE"));
-        Assert.assertEquals("Led Zeppelin", getStringFieldValue(entries.get(0), "ARTIST"));
+        Assert.assertEquals("{ID=1, TITLE=V, ARTIST=Led Zeppelin}", entries.get(0).toString());
     }
 
     @Test
@@ -67,9 +66,8 @@ public class RepositoryAdapterTest {
         Record record = new Record("V", "Led Zeppelin");
         record.addSong(new Song("Black Dog", 10));
         repositoryAdapter.save(record);
-        List<Map<String, Object>> allEntries = getAllEntries(SONG_TABLE);
-        Assert.assertEquals("Black Dog", getStringFieldValue(allEntries.get(0), "TITLE"));
-        Assert.assertEquals(10, getIntegerFieldValue(allEntries.get(0), "DURATION").intValue());
+        List<Map<String, Object>> entries = getAllEntries(SONG_TABLE);
+        Assert.assertEquals("{ID=1, TITLE=Black Dog, DURATION=10, RECORD_ID=1}",entries.get(0).toString());
     }
 
     @Test
@@ -79,9 +77,6 @@ public class RepositoryAdapterTest {
         Assert.assertEquals(id.longValue(), getIntegerFieldValue(entries.get(0), "ID").longValue());
     }
 
-    private String getStringFieldValue(Map<String, Object> entry, String field) {
-        return (String) entry.get(field);
-    }
 
     private Integer getIntegerFieldValue(Map<String, Object> entry, String field) {
         return (Integer) entry.get(field);
