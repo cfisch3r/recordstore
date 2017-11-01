@@ -3,6 +3,8 @@ allprojects {
 	version '1.0-SNAPSHOT'
 
 	apply plugin: 'java'
+	apply plugin: 'jdepend'
+
 
 	sourceCompatibility = 1.8
 
