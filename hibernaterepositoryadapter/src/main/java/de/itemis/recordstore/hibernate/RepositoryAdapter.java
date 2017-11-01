@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class RepositoryAdapter implements RecordRepository{
+public class RepositoryAdapter implements RecordRepository {
 
     private SessionFactory sessionFactory;
 

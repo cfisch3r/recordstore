@@ -3,6 +3,9 @@ package de.itemis.recordstore;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Record Request DTO.
+ */
 public class Record {
     private String title;
     private String artist;

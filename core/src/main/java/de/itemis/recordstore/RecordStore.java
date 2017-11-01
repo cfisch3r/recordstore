@@ -1,5 +1,8 @@
 package de.itemis.recordstore;
 
+/**
+ * Record Store Application.
+ */
 public class RecordStore {
     private final RecordRepository recordRepository;
 

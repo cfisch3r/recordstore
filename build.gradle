@@ -6,7 +6,7 @@ allprojects {
 	apply plugin: 'jdepend'
 	apply plugin: "jacoco"
 	apply plugin: 'findbugs'
-
+	apply plugin: 'checkstyle'
 
 	sourceCompatibility = 1.8
 
@@ -30,7 +30,11 @@ allprojects {
 		reports {
 			xml.enabled false
 			html.enabled true
-//			html.stylesheet resources.text.fromFile('config/xsl/findbugs-custom.xsl')
 		}
+	}
+
+	checkstyle {
+		configFile file("${rootProject.projectDir}/config/checkstyle/checkstyle.xml")
+		toolVersion "7.6.1"
 	}
 }

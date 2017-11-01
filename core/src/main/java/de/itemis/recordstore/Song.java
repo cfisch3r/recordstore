@@ -1,9 +1,12 @@
 package de.itemis.recordstore;
 
+/**
+ * Song on a record.
+ */
 public class Song {
-    String title;
+    private String title;
 
-    int duration;
+    private int duration;
 
     public Song(String title, int duration) {
         this.title = title;

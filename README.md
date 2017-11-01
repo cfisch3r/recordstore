@@ -26,13 +26,29 @@ Verification is not configured, since this is obsolete when coding according TDD
 Results can be found in *build/jacocoHtml*.
 
 ###FindBugs
-Check is performed by [Gradle FindBugs Plugin](https://docs.gradle.org/current/userguide/findbugs_plugin.html) and can be executed by
+Check is performed by [Gradle FindBugs Plugin](https://docs.gradle.org/current/userguide/findbugs_plugin.html) and can 
+be executed by
 
 ```
 gradle findbugsMain
 gradle findbugsTest
 ```
 
-Results can be found in *build/reports/findbugs
+Results can be found in *build/reports/findbugs*.
+
+###CheckStyle
+The [CheckStyle Gradle Plugin](https://docs.gradle.org/current/userguide/checkstyle_plugin.html) is used for format 
+analysis and can be executed with
+
+```
+gradle check
+```
+
+Configuration can be found in *config/checkstyle*. Unfortunately the reference to the suppression configuration is
+relative to execution path, so the check cannot be executed in module directories.
+Furthermore the Checkstyle version has to be fixed to 6.7.1. Newer versions are not supported. Tis means, that some
+configuration options cannot be used. This  prevents the use of the Google checkstyle file.
+
+Results can be found in *build/results/checkstyle*.
 
  

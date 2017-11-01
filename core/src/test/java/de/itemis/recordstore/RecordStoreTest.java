@@ -7,6 +7,7 @@ import org.junit.Test;
 public class RecordStoreTest {
 
     public static final Long NEW_ALBUM_ID = 4711L;
+    public static final int DURATION = 302;
     private RecordStore recordStore;
     private RecordRepositoryMock recordRepository;
 
@@ -20,7 +21,7 @@ public class RecordStoreTest {
     public void when_record_is_stored_ID_from_repository_is_returned() {
         Record record = createRecord();
         Long albumId = recordStore.add(record);
-        Assert.assertEquals(NEW_ALBUM_ID,albumId);
+        Assert.assertEquals(NEW_ALBUM_ID, albumId);
     }
 
     @Test
@@ -32,7 +33,7 @@ public class RecordStoreTest {
 
     private Record createRecord() {
         Record record = new Record("The Book of Souls", "Iron Maiden");
-        record.addSong(new Song("Speed of Light", 302));
+        record.addSong(new Song("Speed of Light", DURATION));
         return record;
     }
 

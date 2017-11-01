@@ -11,7 +11,7 @@ import java.util.Set;
 public class RecordData {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic
     public Long id;
 
@@ -21,8 +21,8 @@ public class RecordData {
     @Basic
     public String artist;
 
-    @OneToMany(cascade={CascadeType.ALL})
-    @JoinColumn(name="RECORD_ID", nullable=false)
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "RECORD_ID", nullable = false)
     public Set<SongData> songs = new HashSet<>();
 
     public RecordData(Record record) {

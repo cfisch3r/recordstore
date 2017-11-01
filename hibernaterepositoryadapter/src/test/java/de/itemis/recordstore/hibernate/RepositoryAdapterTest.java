@@ -67,7 +67,7 @@ public class RepositoryAdapterTest {
         record.addSong(new Song("Black Dog", 10));
         repositoryAdapter.save(record);
         List<Map<String, Object>> entries = getAllEntries(SONG_TABLE);
-        Assert.assertEquals("{ID=1, TITLE=Black Dog, DURATION=10, RECORD_ID=1}",entries.get(0).toString());
+        Assert.assertEquals("{ID=1, TITLE=Black Dog, DURATION=10, RECORD_ID=1}", entries.get(0).toString());
     }
 
     @Test
