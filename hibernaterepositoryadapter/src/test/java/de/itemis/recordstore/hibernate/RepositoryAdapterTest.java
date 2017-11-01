@@ -7,10 +7,9 @@ import de.itemis.recordstore.Song;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.flywaydb.core.Flyway;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+import pl.domzal.junit.docker.rule.DockerRule;
+import pl.domzal.junit.docker.rule.WaitFor;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -20,20 +19,20 @@ public class RepositoryAdapterTest {
     public static final String RECORDSTORE_SCHEMA = "recordstore";
     public static final String MYSQL_SCHEMA = "mysql";
     public static final String DB_BASE_CONNECTION_STRING = "jdbc:mysql://127.0.0.1";
-    public static final String DB_USER = "test";
-    public static final String DB_PW = "test";
+    public static final String DB_USER = "root";
+    public static final String DB_PW = "admin";
     public static final String RECORD_TABLE = "record";
     public static final String SONG_TABLE = "song";
 
     private RepositoryAdapter repositoryAdapter;
 
-//    @ClassRule
-//    public static DockerRule mysqlContainer = DockerRule.builder()
-//            .imageName("mysql/mysql-server:latest")
-//            .expose("3306","3306")
-//            .env("MYSQL_ROOT_PASSWORD","admin")
-//            .waitFor(WaitFor.logMessage("Starting MySQL"))
-//            .build();
+    @ClassRule
+    public static DockerRule mysqlContainer = DockerRule.builder()
+            .imageName("mysql:latest")
+            .expose("3306","3306")
+            .env("MYSQL_ROOT_PASSWORD",DB_PW)
+            .waitFor(WaitFor.logMessage("MySQL init process done. Ready for start up."))
+            .build();
 
     @Before
     public void setUp() throws Exception {

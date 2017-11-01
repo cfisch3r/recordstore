@@ -1,6 +1,18 @@
 #Record Store Demo
 
 
+##Integration Test with Docker
+Integration Tests require a running mysql database. to reduce configuration errors and overhead the database is
+launched as Docker container using the excellent [Junit Docker Rule](https://github.com/tdomzal/junit-docker-rule).
+To run the tests Mac users have to set the following environment variable:
+
+```
+DOCKER_HOST=unix:///var/run/docker.sock
+```
+Nevertheless it can happen that the docker connection breaks producing 500 exceptions. In this case remove 
+*/var/run/docker.sock* and restart docker.
+
+
 ##Analysis
 
 ###Dependencies
