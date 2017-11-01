@@ -4,6 +4,7 @@ allprojects {
 
 	apply plugin: 'java'
 	apply plugin: 'jdepend'
+	apply plugin: "jacoco"
 
 
 	sourceCompatibility = 1.8
@@ -14,5 +15,13 @@ allprojects {
 
 	dependencies {
 	    testCompile group: 'junit', name: 'junit', version: '4.12'
+	}
+
+	jacocoTestReport {
+		reports {
+			xml.enabled false
+			csv.enabled false
+			html.destination file("${buildDir}/jacocoHtml")
+		}
 	}
 }
